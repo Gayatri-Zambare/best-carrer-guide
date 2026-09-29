@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=fai_miniproject_68_production_secret_key_2026
+      - ACCESS_TOKEN_EXPIRE_MINUTES=1440
+      - DISABLE_SQLALCHEMY_CEXT=1
+    volumes:
+      - ./backend/ai_career_guide.db:/app/ai_career_guide.db
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
